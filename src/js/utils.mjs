@@ -21,3 +21,26 @@ export function setClick(selector, callback) {
   });
   qs(selector).addEventListener("click", callback);
 }
+
+// gets the value of a url param
+export function getParam(param){
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const returnParam = urlParams.get(param);
+  return returnParam;
+}
+
+export function renderListWithTemplate(
+  templateFn,
+  parentElement,
+  list,
+  position = "afterbegin",
+  clear = false
+) {
+  const htmlStrings = list.map(templateFn);
+  if (clear) {
+    parentElement.innerHTML = "";
+  }
+  parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
+}
+
