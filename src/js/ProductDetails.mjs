@@ -1,4 +1,4 @@
-  import { setLocalStorage } from "./utils.mjs";
+  import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 function productDetailsTemplate(product) {
     return `<section class="product-detail"> <h3>${product.Brand.Name}</h3>
@@ -25,7 +25,7 @@ export default class ProductDetails {
         this.dataSource = dataSource;
     }
 
-    async  init() {
+    async init() {
         // use our datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
         this.product = await this.dataSource.findProductById(this.productId);
         // once we have the product details we can render out the HTML
@@ -37,8 +37,18 @@ export default class ProductDetails {
         .addEventListener("click", this.addToCart.bind(this));
     }
 
-    addProductToCart(product) {
-        setLocalStorage("so-cart", product);
+    // addProductToCart(product) {
+    //     setLocalStorage("so-cart", product);
+    // }
+
+    addToCart() {
+      let cartContents = getLocalStorage("so-cart");
+      if(!cartContents){
+        cartContents = [];
+      }
+
+      cartContents.push(this.product);
+      setLocalStorage("so-cart", cartContents);
     }
 
     renderProductDetails(selector) {
